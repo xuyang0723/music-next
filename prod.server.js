@@ -102,7 +102,7 @@ apiRoutes.get('/search', function (req, res) {
   })
 })
 
-apiRoutes.get('/api/getTopBanner', function (req, res) {
+apiRoutes.get('/getTopBanner', function (req, res) {
   const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
   const jumpPrefix = 'https://y.qq.com/n/yqq/album/'
 
