@@ -130,7 +130,6 @@
           ret.push({ ...data.zhida, ...{ type: TYPE_SINGER } })
         }
         return processSongsUrl(this._normalizeSongs(data.song.list)).then((songs) => {
-          console.log(songs)
           ret = ret.concat(songs)
           return ret
         })
