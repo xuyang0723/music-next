@@ -53,7 +53,7 @@
         page: 1,
         pullup: true,
         beforeScroll: true,
-        hasMore: true,
+        hasMore: false,
         result: []
       }
     },
@@ -63,14 +63,16 @@
       },
       search () {
         this.page = 1
-        this.hasMore = true
         this.$refs.suggest.scrollTo(0, 0)
+        this.hasMore = true
         search(this.query, this.page, this.showSinger, perpage).then((res) => {
           if (res.code === ERR_OK) {
             this._genResult(res.data).then((result) => {
               this.result = result
+              setTimeout(() => {
+                this._checkMore(res.data)
+              }, 20)
             })
-            this._checkMore(res.data)
           }
         })
       },
@@ -83,8 +85,10 @@
           if (res.code === ERR_OK) {
             this._genResult(res.data).then((result) => {
               this.result = this.result.concat(result)
+              setTimeout(() => {
+                this._checkMore(res.data)
+              }, 20)
             })
-            this._checkMore(res.data)
           }
         })
       },
@@ -126,6 +130,7 @@
           ret.push({ ...data.zhida, ...{ type: TYPE_SINGER } })
         }
         return processSongsUrl(this._normalizeSongs(data.song.list)).then((songs) => {
+          console.log(songs)
           ret = ret.concat(songs)
           return ret
         })
@@ -143,6 +148,10 @@
         const song = data.song
         if (!song.list.length || (song.curnum + (song.curpage - 1) * perpage) >= song.totalnum) {
           this.hasMore = false
+        } else {
+          if (!this.$refs.suggest.scroll.hasVerticalScroll) {
+            this.searchMore()
+          }
         }
       },
       ...mapMutations({
