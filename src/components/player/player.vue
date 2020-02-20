@@ -361,6 +361,7 @@
       },
       middleTouchStart (e) {
         this.touch.initiated = true
+        this.touch.directionLocked = ''
         // 用来判断是否是一次移动
         this.touch.moved = false
         const touch = e.touches[0]
@@ -374,9 +375,22 @@
         const touch = e.touches[0]
         const deltaX = touch.pageX - this.touch.startX
         const deltaY = touch.pageY - this.touch.startY
-        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+
+        const absDeltaX = Math.abs(deltaX)
+        const absDeltaY = Math.abs(deltaY)
+
+        if (!this.touch.directionLocked) {
+          if (absDeltaX > absDeltaY) {
+            this.touch.directionLocked = 'h' // lock horizontally
+          } else if (absDeltaY >= absDeltaX) {
+            this.touch.directionLocked = 'v' // lock vertically
+          }
+        }
+
+        if (this.touch.directionLocked === 'v') {
           return
         }
+
         if (!this.touch.moved) {
           this.touch.moved = true
         }
