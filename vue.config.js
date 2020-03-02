@@ -103,6 +103,10 @@ module.exports = {
 
       app.get('/api/getTopBanner', function (req, res) {
         const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+        const jumpPrefixMap = {
+          10002: 'https://y.qq.com/n/yqq/album/',
+          10014: 'https://y.qq.com/n/yqq/playlist/'
+        }
         const jumpPrefix = 'https://y.qq.com/n/yqq/album/'
 
         axios.get(url, {
@@ -120,6 +124,7 @@ module.exports = {
               for (let i = 0; i < content.length; i++) {
                 const item = content[i]
                 const sliderItem = {}
+                const jumpPrefix = jumpPrefixMap[item.type || 10002]
                 sliderItem.id = item.id
                 sliderItem.linkUrl = jumpPrefix + item.jump_info.url + '.html'
                 sliderItem.picUrl = item.pic_info.url
