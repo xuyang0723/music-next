@@ -105,9 +105,9 @@ module.exports = {
         const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
         const jumpPrefixMap = {
           10002: 'https://y.qq.com/n/yqq/album/',
-          10014: 'https://y.qq.com/n/yqq/playlist/'
+          10014: 'https://y.qq.com/n/yqq/playlist/',
+          10012: 'https://y.qq.com/n/yqq/mv/v/'
         }
-        const jumpPrefix = 'https://y.qq.com/n/yqq/album/'
 
         axios.get(url, {
           headers: {
