@@ -15,7 +15,6 @@ var csrfProtection = csrf({
   ignoreMethods: ['HEAD', 'OPTIONS'],
   checkPathReg: /^\/api/
 })
-var parseForm = bodyParser.urlencoded({ extended: false })
 app.use(cookieParser())
 app.use(csrfProtection)
 
@@ -83,7 +82,7 @@ apiRoutes.get('/lyric', csrfProtection, function (req, res) {
   })
 })
 
-apiRoutes.post('/getPurlUrl', parseForm, csrfProtection, function (req, res) {
+apiRoutes.post('/getPurlUrl', bodyParser.json(), csrfProtection, function (req, res) {
   const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
   axios.post(url, req.body, {
     headers: {
