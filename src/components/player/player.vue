@@ -496,6 +496,9 @@
         }
         this.$refs.audio.src = newSong.url
         this.$refs.audio.play()
+        if (!this.playing) {
+          this.setPlayingState(true)
+        }
         // 若歌曲 5s 未播放，则认为超时，修改状态确保可以切换歌曲。
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
