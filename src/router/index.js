@@ -1,66 +1,70 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-Vue.use(Router)
+const Recommend = () => import('@/views/recommend'/* webpackChunkName: "recommend" */)
+const Singer = () => import('@/views/singer'/* webpackChunkName: "singer" */)
+const TopList = () => import('@/views/top-list'/* webpackChunkName: "top-list" */)
+const Search = () => import('@/views/search'/* webpackChunkName: "search" */)
+const SingerDetail = () => import('@/views/singer-detail'/* webpackChunkName: "singer-detail" */)
+const Album = () => import('@/views/album'/* webpackChunkName: "album" */)
+const TopDetail = () => import('@/views/top-detail'/* webpackChunkName: "top-detail" */)
+const UserCenter = () => import('@/views/user-center'/* webpackChunkName: "user-center" */)
 
-const Recommend = () => import('components/recommend/recommend')
-const Singer = () => import('components/singer/singer')
-const Rank = () => import('components/rank/rank')
-const Search = () => import('components/search/search')
-const SingerDetail = () => import('components/singer-detail/singer-detail')
-const Disc = () => import('components/disc/disc')
-const TopList = () => import('components/top-list/top-list')
-const UserCenter = () => import('components/user-center/user-center')
-
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      redirect: '/recommend'
-    },
-    {
-      path: '/recommend',
-      component: Recommend,
-      children: [
-        {
-          path: ':id',
-          component: Disc
-        }
-      ]
-    },
-    {
-      path: '/singer',
-      component: Singer,
-      children: [
-        {
-          path: ':id',
-          component: SingerDetail
-        }
-      ]
-    },
-    {
-      path: '/rank',
-      component: Rank,
-      children: [
-        {
-          path: ':id',
-          component: TopList
-        }
-      ]
-    },
-    {
-      path: '/search',
-      component: Search,
-      children: [
-        {
-          path: ':id',
-          component: SingerDetail
-        }
-      ]
-    },
-    {
-      path: '/user',
-      component: UserCenter
+const routes = [
+  {
+    path: '/',
+    redirect: '/recommend'
+  },
+  {
+    path: '/recommend',
+    component: Recommend,
+    children: [
+      {
+        path: ':id',
+        component: Album
+      }
+    ]
+  },
+  {
+    path: '/singer',
+    component: Singer,
+    children: [
+      {
+        path: ':id',
+        component: SingerDetail
+      }
+    ]
+  },
+  {
+    path: '/top-list',
+    component: TopList,
+    children: [
+      {
+        path: ':id',
+        component: TopDetail
+      }
+    ]
+  },
+  {
+    path: '/search',
+    component: Search,
+    children: [
+      {
+        path: ':id',
+        component: SingerDetail
+      }
+    ]
+  },
+  {
+    path: '/user',
+    components: {
+      user: UserCenter
     }
-  ]
+  }
+]
+
+const router = createRouter({
+  history: createWebHashHistory(process.env.BASE_URL),
+  routes
 })
+
+export default router

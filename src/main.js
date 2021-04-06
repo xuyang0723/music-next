@@ -1,40 +1,33 @@
-// import 'babel-polyfill'
-// import 'common/js/hack'
-import Vue from 'vue'
-import App from './App'
+import { createApp } from 'vue'
+import App from './App.vue'
 import router from './router'
-import fastclick from 'fastclick'
-import VueLazyload from 'vue-lazyload'
 import store from './store'
-import { SET_PLAY_HISTORY, SET_FAVORITE_LIST } from './store/mutation-types'
-import { loadPlay, loadFavorite } from 'common/js/cache'
-import { processSongsUrl } from 'common/js/song'
+import lazyPlugin from 'vue3-lazy'
+import loadingDirective from '@/components/base/loading/directive'
+import noResultDirective from '@/components/base/no-result/directive'
+import { load, saveAll } from '@/assets/js/array-store'
+import { FAVORITE_KEY, PLAY_KEY } from '@/assets/js/constant'
+import { processSongs } from '@/service/song'
 
-import 'common/stylus/index.styl'
+// 引入全局样式文件
+import '@/assets/scss/index.scss'
 
-/* eslint-disable no-unused-vars */
-// import vConsole from 'vconsole'
+const favoriteSongs = load(FAVORITE_KEY)
+if (favoriteSongs.length > 0) {
+  processSongs(favoriteSongs).then((songs) => {
+    store.commit('setFavoriteList', songs)
+    saveAll(songs, FAVORITE_KEY)
+  })
+}
 
-fastclick.attach(document.body)
+const historySongs = load(PLAY_KEY)
+if (historySongs.length > 0) {
+  processSongs(historySongs).then((songs) => {
+    store.commit('setPlayHistory', songs)
+    saveAll(songs, PLAY_KEY)
+  })
+}
 
-Vue.use(VueLazyload, {
-  loading: require('common/image/default.png')
-})
-
-const historySongs = loadPlay()
-processSongsUrl(historySongs).then((songs) => {
-  store.commit(SET_PLAY_HISTORY, songs)
-})
-
-const favoriteSongs = loadFavorite()
-processSongsUrl(favoriteSongs).then((songs) => {
-  store.commit(SET_FAVORITE_LIST, songs)
-})
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+createApp(App).use(store).use(router).use(lazyPlugin, {
+  loading: require('@/assets/images/default.png')
+}).directive('loading', loadingDirective).directive('no-result', noResultDirective).mount('#app')

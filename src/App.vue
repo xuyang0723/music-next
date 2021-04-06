@@ -1,27 +1,47 @@
 <template>
-  <div id="app" @touchmove.prevent>
-    <m-header></m-header>
-    <tab></tab>
+  <m-header></m-header>
+  <tab></tab>
+  <router-view :style="viewStyle" v-slot="{ Component }">
     <keep-alive>
-      <router-view></router-view>
+      <component :is="Component"/>
     </keep-alive>
-    <player></player>
-  </div>
+  </router-view>
+  <router-view
+    :style="viewStyle"
+    name="user"
+    v-slot="{ Component }"
+  >
+    <transition appear name="slide">
+      <keep-alive>
+        <component :is="Component"/>
+      </keep-alive>
+    </transition>
+  </router-view>
+  <player></player>
 </template>
 
-<script type="text/ecmascript-6">
-  import MHeader from 'components/m-header/m-header'
-  import Player from 'components/player/player'
-  import Tab from 'components/tab/tab'
+<script>
+  import Header from '@/components/header/header'
+  import Tab from '@/components/tab/tab'
+  import Player from '@/components/player/player'
+  import { mapState } from 'vuex'
 
   export default {
     components: {
-      MHeader,
-      Tab,
-      Player
+      Player,
+      MHeader: Header,
+      Tab
+    },
+    computed: {
+      viewStyle() {
+        const bottom = this.playlist.length ? '60px' : '0'
+        return {
+          bottom
+        }
+      },
+      ...mapState([
+        'playlist'
+      ])
     }
   }
 </script>
-
-<style scoped lang="stylus" rel="stylesheet/stylus">
-</style>

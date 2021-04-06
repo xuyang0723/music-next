@@ -1,41 +1,38 @@
-import * as types from './mutation-types'
-
 const mutations = {
-  [types.SET_SINGER] (state, singer) {
-    state.singer = singer
+  setPlayingState(state, playing) {
+    state.playing = playing
   },
-  [types.SET_PLAYING_STATE] (state, flag) {
-    state.playing = flag
-  },
-  [types.SET_FULL_SCREEN] (state, flag) {
-    state.fullScreen = flag
-  },
-  [types.SET_PLAYLIST] (state, list) {
-    state.playlist = list
-  },
-  [types.SET_SEQUENCE_LIST] (state, list) {
+  setSequenceList(state, list) {
     state.sequenceList = list
   },
-  [types.SET_PLAY_MODE] (state, mode) {
-    state.mode = mode
+  setPlaylist(state, list) {
+    state.playlist = list
   },
-  [types.SET_CURRENT_INDEX] (state, index) {
+  setPlayMode(state, mode) {
+    state.playMode = mode
+  },
+  setCurrentIndex(state, index) {
     state.currentIndex = index
   },
-  [types.SET_DISC] (state, disc) {
-    state.disc = disc
+  setFullScreen(state, fullScreen) {
+    state.fullScreen = fullScreen
   },
-  [types.SET_TOP_LIST] (state, topList) {
-    state.topList = topList
-  },
-  [types.SET_SEARCH_HISTORY] (state, history) {
-    state.searchHistory = history
-  },
-  [types.SET_PLAY_HISTORY] (state, history) {
-    state.playHistory = history
-  },
-  [types.SET_FAVORITE_LIST] (state, list) {
+  setFavoriteList(state, list) {
     state.favoriteList = list
+  },
+  addSongLyric(state, { song, lyric }) {
+    state.sequenceList.map((item) => {
+      if (item.mid === song.mid) {
+        item.lyric = lyric
+      }
+      return item
+    })
+  },
+  setSearchHistory(state, searches) {
+    state.searchHistory = searches
+  },
+  setPlayHistory(state, songs) {
+    state.playHistory = songs
   }
 }
 

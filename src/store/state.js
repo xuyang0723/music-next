@@ -1,19 +1,16 @@
-import { playMode } from 'common/js/config'
-import { loadSearch } from 'common/js/cache'
+import { PLAY_MODE, SEARCH_KEY } from '@/assets/js/constant'
+import { load } from '@/assets/js/array-store'
 
 const state = {
-  singer: {},
-  playing: false,
-  fullScreen: false,
-  playlist: [],
   sequenceList: [],
-  mode: playMode.sequence,
-  currentIndex: -1,
-  disc: {},
-  topList: {},
-  searchHistory: loadSearch(),
-  playHistory: [],
-  favoriteList: []
+  playlist: [],
+  playing: false,
+  playMode: PLAY_MODE.sequence,
+  currentIndex: 0,
+  fullScreen: false,
+  favoriteList: [],
+  searchHistory: load(SEARCH_KEY),
+  playHistory: []
 }
 
 export default state
